@@ -99,15 +99,15 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
           }`}>
             <div className="flex items-center">
               {/* Platform indicator or link icon */}
-              <div className="pl-4 flex items-center">
+              <div className="pl-3 sm:pl-4 flex items-center shrink-0">
                 {detectedPlatform ? (
                   detectedPlatform === 'meta' && /facebook\.com|fb\.watch|fb\.com/i.test(url) ? (
-                    <FaFacebook className="w-5 h-5" style={{ color: '#1877f2' }} />
+                    <FaFacebook className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: '#1877f2' }} />
                   ) : (
                     <PlatformIcon platform={detectedPlatform} size="md" />
                   )
                 ) : (
-                  <Link2 className="w-5 h-5 text-zinc-500" />
+                  <Link2 className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-500" />
                 )}
               </div>
 
@@ -119,37 +119,37 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Paste your link here..."
                 disabled={isLoading}
-                className="flex-1 bg-transparent text-white placeholder-zinc-500 text-base py-4 px-3 outline-none"
+                className="flex-1 bg-transparent text-white placeholder-zinc-500 text-sm sm:text-base py-3 sm:py-4 px-2 sm:px-3 outline-none min-w-0"
                 autoComplete="off"
                 spellCheck="false"
               />
 
               {/* Actions */}
-              <div className="pr-2 flex items-center gap-1">
+              <div className="pr-1.5 sm:pr-2 flex items-center gap-0.5 sm:gap-1">
                 {!url && (
                   <button
                     type="button"
                     onClick={handlePaste}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                    className="p-1.5 sm:p-2 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
                     title="Paste"
                   >
-                    <Clipboard className="w-4 h-4" />
+                    <Clipboard className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
                 )}
                 {url && !isLoading && (
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                    className="p-1.5 sm:p-2 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                     title="Clear"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
                 )}
                 <button
                   type="submit"
                   disabled={!url.trim() || isLoading || !!disabledMessage}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-all duration-200 min-w-[44px] ${
                     !url.trim() || isLoading || disabledMessage
                       ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed'
                       : 'bg-blue-600 text-white hover:bg-blue-500 active:scale-[0.98]'
