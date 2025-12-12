@@ -15,6 +15,7 @@ import {
   PlatformInfo,
   Platform,
 } from '@/utils/platformDetector';
+import { apiUrl } from '@/config';
 
 interface UseDownloaderReturn {
   state: DownloadState;
@@ -272,7 +273,7 @@ export function useDownloader(): UseDownloaderReturn {
     setState({ isLoading: true, error: null, result: null, detectedPlatform: platformInfo as unknown as import('@/types').Platform });
 
     try {
-      const response = await axios.get<ApiResponse>(platformInfo.endpoint, {
+      const response = await axios.get<ApiResponse>(apiUrl(platformInfo.endpoint), {
         params: { url: normalizedUrl },
         timeout: 60000,
       });

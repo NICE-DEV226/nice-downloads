@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Info, AlertTriangle, CheckCircle } from 'lucide-react';
 import axios from 'axios';
+import { apiUrl } from '../config';
 
 interface Announcement {
   id: string;
@@ -13,7 +14,7 @@ export default function AnnouncementBanner() {
   const [dismissed, setDismissed] = useState<string[]>([]);
 
   useEffect(() => {
-    axios.get('/api/admin/public/announcements')
+    axios.get(apiUrl('/api/admin/public/announcements'))
       .then((res) => setAnnouncements(res.data.data || []))
       .catch(() => {});
   }, []);

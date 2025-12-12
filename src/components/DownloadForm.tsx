@@ -3,6 +3,7 @@ import { Download, Loader2, Link2, X, Clipboard } from 'lucide-react';
 import { FaFacebook } from 'react-icons/fa';
 import axios from 'axios';
 import { detectPlatform, getPlatformDisplayName, PLATFORMS, PlatformId, PlatformIcon } from './PlatformIcon';
+import { apiUrl } from '../config';
 
 // Cache for disabled platforms from backend
 let disabledPlatformsCache: { platform: string; reason: string }[] | null = null;
@@ -10,7 +11,7 @@ let disabledPlatformsCache: { platform: string; reason: string }[] | null = null
 async function fetchDisabledPlatforms() {
   if (disabledPlatformsCache !== null) return disabledPlatformsCache;
   try {
-    const res = await axios.get('/api/admin/public/disabled-platforms');
+    const res = await axios.get(apiUrl('/api/admin/public/disabled-platforms'));
     disabledPlatformsCache = res.data.data || [];
     return disabledPlatformsCache;
   } catch {

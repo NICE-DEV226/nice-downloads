@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { NormalizedResult, NormalizedDownload } from '@/types';
 import { PlatformIcon, PlatformId, PLATFORMS } from './PlatformIcon';
+import { apiUrl } from '../config';
 
 interface ResultCardProps {
   result: NormalizedResult | null;
@@ -29,7 +30,7 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
   const handleDownload = (url: string, label: string) => {
     // Use proxy for cross-origin downloads
     const filename = `${label.replace(/[^a-z0-9]/gi, '_')}.mp4`;
-    const proxyUrl = `/api/proxy/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+    const proxyUrl = apiUrl(`/api/proxy/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`);
     
     // Create link and trigger download
     const link = document.createElement('a');
@@ -43,7 +44,7 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
     
     // Track download
     if (platformId) {
-      axios.post('/api/admin/track', { platform: platformId }).catch(() => {});
+      axios.post(apiUrl('/api/admin/track'), { platform: platformId }).catch(() => {});
     }
   };
 

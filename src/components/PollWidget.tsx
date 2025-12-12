@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Send, MessageSquare, X } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { apiUrl } from '../config';
 
 interface Poll {
   id: string;
@@ -18,7 +19,7 @@ export default function PollWidget() {
     const hasResponded = localStorage.getItem('poll_responded');
     if (hasResponded) return;
     
-    axios.get('/api/admin/public/poll')
+    axios.get(apiUrl('/api/admin/public/poll'))
       .then((res) => { if (res.data.data) setPoll(res.data.data); })
       .catch(() => {});
   }, []);
@@ -26,7 +27,7 @@ export default function PollWidget() {
   const handleSubmit = async () => {
     if (!response.trim() || !poll) return;
     try {
-      await axios.post(`/api/admin/public/poll/${poll.id}/respond`, { response });
+      await axios.post(apiUrl(`/api/admin/public/poll/${poll.id}/respond`), { response });
       setSubmitted(true);
       localStorage.setItem('poll_responded', poll.id);
       toast.success('Thanks for your feedback!');

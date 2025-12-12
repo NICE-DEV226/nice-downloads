@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Send, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { apiUrl } from '../config';
 
 interface RatingModalProps {
   isOpen: boolean;
@@ -27,7 +28,7 @@ export default function RatingModal({ isOpen, onClose, platform }: RatingModalPr
     setIsSubmitting(true);
 
     try {
-      await axios.post('/api/admin/rating', {
+      await axios.post(apiUrl('/api/admin/rating'), {
         score,
         comment: comment.trim() || null,
         platform,

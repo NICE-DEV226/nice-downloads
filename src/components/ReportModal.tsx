@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, AlertTriangle, Send, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { apiUrl } from '../config';
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ export default function ReportModal({ isOpen, onClose, url, platform, errorMessa
     setIsSubmitting(true);
 
     try {
-      await axios.post('/api/admin/report', {
+      await axios.post(apiUrl('/api/admin/report'), {
         url,
         platform: platform || 'unknown',
         errorMessage,
