@@ -39,7 +39,9 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
 
   // Load disabled platforms on mount
   useEffect(() => {
-    fetchDisabledPlatforms().then(setDisabledPlatforms);
+    fetchDisabledPlatforms().then((data) => {
+      if (data) setDisabledPlatforms(data);
+    });
   }, []);
 
   // Check for disabled platforms
@@ -82,7 +84,9 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
     inputRef.current?.focus();
   };
 
-  const platformInfo = detectedPlatform ? PLATFORMS[detectedPlatform] : null;
+  // platformInfo is available for future use
+  const _platformInfo = detectedPlatform ? PLATFORMS[detectedPlatform] : null;
+  void _platformInfo;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4">

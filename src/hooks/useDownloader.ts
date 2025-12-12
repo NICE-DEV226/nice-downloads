@@ -220,7 +220,7 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
     caption: data.caption || null,
     profile: data.profile || null,
     downloads,
-    platform,
+    platform: platform as unknown as import('@/types').Platform,
     originalData: data,
   };
 }
@@ -269,7 +269,7 @@ export function useDownloader(): UseDownloaderReturn {
       return;
     }
 
-    setState({ isLoading: true, error: null, result: null, detectedPlatform: platformInfo as any });
+    setState({ isLoading: true, error: null, result: null, detectedPlatform: platformInfo as unknown as import('@/types').Platform });
 
     try {
       const response = await axios.get<ApiResponse>(platformInfo.endpoint, {
@@ -284,7 +284,7 @@ export function useDownloader(): UseDownloaderReturn {
       const result = response.data.data;
       const finalResult = Array.isArray(result) ? { downloads: result } as DownloadResult : result;
 
-      setState({ isLoading: false, error: null, result: finalResult || null, detectedPlatform: platformInfo as any });
+      setState({ isLoading: false, error: null, result: finalResult || null, detectedPlatform: platformInfo as unknown as import('@/types').Platform });
     } catch (error) {
       let errorMessage = 'An unexpected error occurred';
 
@@ -304,7 +304,7 @@ export function useDownloader(): UseDownloaderReturn {
         errorMessage = error.message;
       }
 
-      setState({ isLoading: false, error: errorMessage, result: null, detectedPlatform: platformInfo as any });
+      setState({ isLoading: false, error: errorMessage, result: null, detectedPlatform: platformInfo as unknown as import('@/types').Platform });
     }
   }, []);
 
