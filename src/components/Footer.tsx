@@ -44,7 +44,7 @@ export default function Footer() {
           <h3 className="text-sm font-medium text-zinc-400 text-center mb-6">
             Supported Platforms
           </h3>
-          <div className="flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 max-w-2xl mx-auto">
             {PLATFORM_ICONS.map(({ icon: Icon, color, name }) => (
               <div
                 key={name}
@@ -93,7 +93,7 @@ export default function Footer() {
           </div>
 
           {/* Credits */}
-          <p className="text-zinc-500 text-sm flex items-center gap-1.5">
+          <p className="text-zinc-500 text-xs sm:text-sm flex flex-wrap items-center justify-center gap-1.5">
             <span>© {currentYear}</span>
             <span className="text-zinc-700">•</span>
             <span>Made with</span>

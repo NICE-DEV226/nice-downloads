@@ -45,7 +45,7 @@ export default function PollWidget() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-80 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-40 overflow-hidden">
+    <div className="fixed bottom-4 right-4 w-[calc(100vw-2rem)] max-w-80 bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl z-40 overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
         <span className="font-medium text-white text-sm">Quick Poll</span>
         <button onClick={() => setIsOpen(false)} className="p-1 text-zinc-500 hover:text-white"><X className="w-4 h-4" /></button>

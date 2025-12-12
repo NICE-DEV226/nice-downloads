@@ -202,8 +202,8 @@ export default function Admin() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex gap-2 mb-8 flex-wrap">
+      <main className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+        <div className="flex gap-2 mb-6 sm:mb-8 flex-wrap overflow-x-auto pb-2">
           {[
             { id: 'stats', label: 'Stats', icon: BarChart3 },
             { id: 'reports', label: 'Reports', icon: AlertTriangle, count: stats?.pendingReports },
@@ -212,8 +212,8 @@ export default function Admin() {
             { id: 'polls', label: 'Polls', icon: MessageSquare },
             { id: 'platforms', label: 'Platforms', icon: Power },
           ].map(({ id, label, icon: Icon, count }) => (
-            <button key={id} onClick={() => setActiveTab(id as typeof activeTab)} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors ${activeTab === id ? 'bg-blue-600 text-white' : 'bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800'}`}>
-              <Icon className="w-4 h-4" /><span>{label}</span>
+            <button key={id} onClick={() => setActiveTab(id as typeof activeTab)} className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${activeTab === id ? 'bg-blue-600 text-white' : 'bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800'}`}>
+              <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" /><span className="hidden sm:inline">{label}</span><span className="sm:hidden">{label.slice(0, 4)}</span>
               {count !== undefined && count > 0 && <span className="px-1.5 py-0.5 rounded-full bg-red-500 text-white text-xs">{count}</span>}
             </button>
           ))}
@@ -221,23 +221,23 @@ export default function Admin() {
 
         {activeTab === 'stats' && stats && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <StatCard icon={Download} label="Downloads" value={stats.totalDownloads} color="blue" />
               <StatCard icon={AlertTriangle} label="Pending" value={stats.pendingReports} color="red" />
               <StatCard icon={Star} label="Avg Rating" value={stats.averageRating} color="yellow" />
               <StatCard icon={Star} label="Ratings" value={stats.totalRatings} color="green" />
             </div>
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-              <h3 className="font-semibold text-white mb-4">Downloads by Platform</h3>
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
+              <h3 className="font-semibold text-white mb-4 text-sm sm:text-base">Downloads by Platform</h3>
               <div className="space-y-3">
                 {Object.entries(stats.downloadsByPlatform).sort(([, a], [, b]) => b - a).map(([platform, count]) => (
-                  <div key={platform} className="flex items-center gap-3">
-                    <span className="text-zinc-400 text-sm w-24 truncate">{platform}</span>
+                  <div key={platform} className="flex items-center gap-2 sm:gap-3">
+                    <span className="text-zinc-400 text-xs sm:text-sm w-20 sm:w-24 truncate">{platform}</span>
                     <div className="flex-1 h-2 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: `${(count / stats.totalDownloads) * 100}%` }} /></div>
-                    <span className="text-zinc-300 text-sm w-12 text-right">{count}</span>
+                    <span className="text-zinc-300 text-xs sm:text-sm w-10 sm:w-12 text-right">{count}</span>
                   </div>
                 ))}
-                {Object.keys(stats.downloadsByPlatform).length === 0 && <p className="text-zinc-500 text-sm">No downloads yet</p>}
+                {Object.keys(stats.downloadsByPlatform).length === 0 && <p className="text-zinc-500 text-xs sm:text-sm">No downloads yet</p>}
               </div>
             </div>
           </motion.div>
@@ -245,33 +245,33 @@ export default function Admin() {
 
         {activeTab === 'reports' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2">
               {['all', 'pending', 'resolved', 'dismissed'].map((filter) => (
-                <button key={filter} onClick={() => setReportFilter(filter)} className={`px-3 py-1.5 rounded-lg text-sm capitalize ${reportFilter === filter ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'}`}>{filter}</button>
+                <button key={filter} onClick={() => setReportFilter(filter)} className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm capitalize whitespace-nowrap ${reportFilter === filter ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-white'}`}>{filter}</button>
               ))}
             </div>
             <div className="space-y-3">
               {filteredReports.map((report) => (
-                <div key={report.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                  <div className="flex items-start justify-between gap-4">
+                <div key={report.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-4">
+                  <div className="flex items-start justify-between gap-2 sm:gap-4">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
                         <span className={`px-2 py-0.5 rounded text-xs font-medium ${report.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400' : report.status === 'resolved' ? 'bg-green-500/10 text-green-400' : 'bg-zinc-700 text-zinc-400'}`}>{report.status}</span>
                         <span className="text-zinc-500 text-xs">{report.platform}</span>
                         <span className="text-zinc-600 text-xs flex items-center gap-1"><Clock className="w-3 h-3" />{new Date(report.createdAt).toLocaleDateString()}</span>
                       </div>
-                      <a href={report.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-sm hover:underline flex items-center gap-1 mb-2">{report.url.slice(0, 50)}...<ExternalLink className="w-3 h-3" /></a>
-                      {report.errorMessage && <p className="text-red-400 text-sm mb-1">{report.errorMessage}</p>}
-                      {report.description && <p className="text-zinc-400 text-sm">{report.description}</p>}
+                      <a href={report.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs sm:text-sm hover:underline flex items-center gap-1 mb-2 break-all">{report.url.slice(0, 50)}...<ExternalLink className="w-3 h-3" /></a>
+                      {report.errorMessage && <p className="text-red-400 text-xs sm:text-sm mb-1">{report.errorMessage}</p>}
+                      {report.description && <p className="text-zinc-400 text-xs sm:text-sm">{report.description}</p>}
                     </div>
-                    <div className="flex items-center gap-1">
-                      {report.status === 'pending' && (<><button onClick={() => updateReportStatus(report.id, 'resolved')} className="p-2 rounded-lg text-green-400 hover:bg-green-500/10"><Check className="w-4 h-4" /></button><button onClick={() => updateReportStatus(report.id, 'dismissed')} className="p-2 rounded-lg text-zinc-400 hover:bg-zinc-800"><X className="w-4 h-4" /></button></>)}
-                      <button onClick={() => deleteReport(report.id)} className="p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-4 h-4" /></button>
+                    <div className="flex flex-col sm:flex-row items-center gap-1">
+                      {report.status === 'pending' && (<><button onClick={() => updateReportStatus(report.id, 'resolved')} className="p-1.5 sm:p-2 rounded-lg text-green-400 hover:bg-green-500/10"><Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button><button onClick={() => updateReportStatus(report.id, 'dismissed')} className="p-1.5 sm:p-2 rounded-lg text-zinc-400 hover:bg-zinc-800"><X className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button></>)}
+                      <button onClick={() => deleteReport(report.id)} className="p-1.5 sm:p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
                     </div>
                   </div>
                 </div>
               ))}
-              {filteredReports.length === 0 && <p className="text-zinc-500 text-center py-8">No reports</p>}
+              {filteredReports.length === 0 && <p className="text-zinc-500 text-center py-8 text-xs sm:text-sm">No reports</p>}
             </div>
           </motion.div>
         )}
@@ -279,91 +279,91 @@ export default function Admin() {
         {activeTab === 'ratings' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
             {ratings.map((rating) => (
-              <div key={rating.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex">{[1, 2, 3, 4, 5].map((s) => (<Star key={s} className={`w-4 h-4 ${s <= rating.score ? 'text-yellow-400 fill-yellow-400' : 'text-zinc-700'}`} />))}</div>
+              <div key={rating.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <div className="flex">{[1, 2, 3, 4, 5].map((s) => (<Star key={s} className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${s <= rating.score ? 'text-yellow-400 fill-yellow-400' : 'text-zinc-700'}`} />))}</div>
                       {rating.platform && <span className="text-zinc-500 text-xs">{rating.platform}</span>}
                     </div>
-                    {rating.comment && <p className="text-zinc-300 text-sm">{rating.comment}</p>}
+                    {rating.comment && <p className="text-zinc-300 text-xs sm:text-sm">{rating.comment}</p>}
                   </div>
-                  <span className="text-zinc-600 text-xs">{new Date(rating.createdAt).toLocaleDateString()}</span>
+                  <span className="text-zinc-600 text-xs whitespace-nowrap">{new Date(rating.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
             ))}
-            {ratings.length === 0 && <p className="text-zinc-500 text-center py-8">No ratings</p>}
+            {ratings.length === 0 && <p className="text-zinc-500 text-center py-8 text-xs sm:text-sm">No ratings</p>}
           </motion.div>
         )}
 
         {activeTab === 'announcements' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-              <h3 className="font-semibold text-white mb-4">Create Announcement</h3>
-              <div className="flex gap-3">
-                <input value={newAnnouncement.message} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, message: e.target.value })} placeholder="Announcement message..." className="flex-1 px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500" />
-                <select value={newAnnouncement.type} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, type: e.target.value })} className="px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
+              <h3 className="font-semibold text-white mb-4 text-sm sm:text-base">Create Announcement</h3>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <input value={newAnnouncement.message} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, message: e.target.value })} placeholder="Announcement message..." className="flex-1 px-3 sm:px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-blue-500" />
+                <select value={newAnnouncement.type} onChange={(e) => setNewAnnouncement({ ...newAnnouncement, type: e.target.value })} className="px-3 sm:px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white text-sm">
                   <option value="info">Info</option><option value="warning">Warning</option><option value="success">Success</option>
                 </select>
-                <button onClick={createAnnouncement} className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center gap-2"><Plus className="w-4 h-4" />Add</button>
+                <button onClick={createAnnouncement} className="px-3 sm:px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center justify-center gap-2 text-sm"><Plus className="w-4 h-4" />Add</button>
               </div>
             </div>
             <div className="space-y-3">
               {announcements.map((a) => (
-                <div key={a.id} className={`bg-zinc-900 border rounded-xl p-4 ${a.active ? 'border-blue-500/50' : 'border-zinc-800 opacity-50'}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${a.type === 'warning' ? 'bg-yellow-500/10 text-yellow-400' : a.type === 'success' ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'}`}>{a.type}</span>
-                      <p className="text-white">{a.message}</p>
+                <div key={a.id} className={`bg-zinc-900 border rounded-xl p-3 sm:p-4 ${a.active ? 'border-blue-500/50' : 'border-zinc-800 opacity-50'}`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium whitespace-nowrap ${a.type === 'warning' ? 'bg-yellow-500/10 text-yellow-400' : a.type === 'success' ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'}`}>{a.type}</span>
+                      <p className="text-white text-xs sm:text-sm truncate">{a.message}</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => toggleAnnouncementActive(a.id, !a.active)} className={`p-2 rounded-lg ${a.active ? 'text-green-400 hover:bg-green-500/10' : 'text-zinc-500 hover:bg-zinc-800'}`}><Power className="w-4 h-4" /></button>
-                      <button onClick={() => deleteAnnouncementItem(a.id)} className="p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-4 h-4" /></button>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <button onClick={() => toggleAnnouncementActive(a.id, !a.active)} className={`p-1.5 sm:p-2 rounded-lg ${a.active ? 'text-green-400 hover:bg-green-500/10' : 'text-zinc-500 hover:bg-zinc-800'}`}><Power className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                      <button onClick={() => deleteAnnouncementItem(a.id)} className="p-1.5 sm:p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
                     </div>
                   </div>
                 </div>
               ))}
-              {announcements.length === 0 && <p className="text-zinc-500 text-center py-8">No announcements</p>}
+              {announcements.length === 0 && <p className="text-zinc-500 text-center py-8 text-xs sm:text-sm">No announcements</p>}
             </div>
           </motion.div>
         )}
 
         {activeTab === 'polls' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-              <h3 className="font-semibold text-white mb-4">Create Poll</h3>
-              <div className="flex gap-3">
-                <input value={newPoll} onChange={(e) => setNewPoll(e.target.value)} placeholder="Poll question..." className="flex-1 px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500" />
-                <button onClick={createPoll} className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center gap-2"><Plus className="w-4 h-4" />Add</button>
+            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
+              <h3 className="font-semibold text-white mb-4 text-sm sm:text-base">Create Poll</h3>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <input value={newPoll} onChange={(e) => setNewPoll(e.target.value)} placeholder="Poll question..." className="flex-1 px-3 sm:px-4 py-2.5 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-blue-500" />
+                <button onClick={createPoll} className="px-3 sm:px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium flex items-center justify-center gap-2 text-sm"><Plus className="w-4 h-4" />Add</button>
               </div>
             </div>
             <div className="space-y-3">
               {polls.map((p) => (
-                <div key={p.id} className={`bg-zinc-900 border rounded-xl p-4 ${p.active ? 'border-blue-500/50' : 'border-zinc-800 opacity-50'}`}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-white font-medium">{p.question}</p>
-                      <p className="text-zinc-500 text-sm">{p.responseCount} responses</p>
+                <div key={p.id} className={`bg-zinc-900 border rounded-xl p-3 sm:p-4 ${p.active ? 'border-blue-500/50' : 'border-zinc-800 opacity-50'}`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white font-medium text-xs sm:text-sm truncate">{p.question}</p>
+                      <p className="text-zinc-500 text-xs sm:text-sm">{p.responseCount} responses</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => viewPollResponses(p.id)} className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 text-sm hover:bg-zinc-700">View</button>
-                      <button onClick={() => togglePollActive(p.id, !p.active)} className={`p-2 rounded-lg ${p.active ? 'text-green-400 hover:bg-green-500/10' : 'text-zinc-500 hover:bg-zinc-800'}`}><Power className="w-4 h-4" /></button>
-                      <button onClick={() => deletePollItem(p.id)} className="p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-4 h-4" /></button>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <button onClick={() => viewPollResponses(p.id)} className="px-2 sm:px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 text-xs sm:text-sm hover:bg-zinc-700 whitespace-nowrap">View</button>
+                      <button onClick={() => togglePollActive(p.id, !p.active)} className={`p-1.5 sm:p-2 rounded-lg ${p.active ? 'text-green-400 hover:bg-green-500/10' : 'text-zinc-500 hover:bg-zinc-800'}`}><Power className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
+                      <button onClick={() => deletePollItem(p.id)} className="p-1.5 sm:p-2 rounded-lg text-red-400 hover:bg-red-500/10"><Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></button>
                     </div>
                   </div>
                 </div>
               ))}
-              {polls.length === 0 && <p className="text-zinc-500 text-center py-8">No polls</p>}
+              {polls.length === 0 && <p className="text-zinc-500 text-center py-8 text-xs sm:text-sm">No polls</p>}
             </div>
             {selectedPollResponses && (
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-white">Responses</h3>
-                  <button onClick={() => setSelectedPollResponses(null)} className="text-zinc-500 hover:text-white"><X className="w-5 h-5" /></button>
+                  <h3 className="font-semibold text-white text-sm sm:text-base">Responses</h3>
+                  <button onClick={() => setSelectedPollResponses(null)} className="text-zinc-500 hover:text-white"><X className="w-4 h-4 sm:w-5 sm:h-5" /></button>
                 </div>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {selectedPollResponses.responses.map((r) => (<div key={r.id} className="p-3 bg-zinc-800 rounded-lg"><p className="text-zinc-300 text-sm">{r.response}</p><p className="text-zinc-600 text-xs mt-1">{new Date(r.createdAt).toLocaleString()}</p></div>))}
-                  {selectedPollResponses.responses.length === 0 && <p className="text-zinc-500 text-sm">No responses yet</p>}
+                  {selectedPollResponses.responses.map((r) => (<div key={r.id} className="p-2.5 sm:p-3 bg-zinc-800 rounded-lg"><p className="text-zinc-300 text-xs sm:text-sm">{r.response}</p><p className="text-zinc-600 text-xs mt-1">{new Date(r.createdAt).toLocaleString()}</p></div>))}
+                  {selectedPollResponses.responses.length === 0 && <p className="text-zinc-500 text-xs sm:text-sm">No responses yet</p>}
                 </div>
               </div>
             )}
@@ -372,16 +372,16 @@ export default function Admin() {
 
         {activeTab === 'platforms' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <p className="text-zinc-400 text-sm mb-4">Toggle platforms on/off. Disabled platforms will show a message to users.</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <p className="text-zinc-400 text-xs sm:text-sm mb-4">Toggle platforms on/off. Disabled platforms will show a message to users.</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {ALL_PLATFORMS.map((platform) => {
                 const isDisabled = disabledPlatforms.some((p) => p.platform === platform);
                 return (
-                  <div key={platform} className={`bg-zinc-900 border rounded-xl p-4 ${isDisabled ? 'border-red-500/50' : 'border-zinc-800'}`}>
-                    <div className="flex items-center justify-between">
-                      <span className={`font-medium capitalize ${isDisabled ? 'text-red-400' : 'text-white'}`}>{platform}</span>
-                      <button onClick={() => togglePlatform(platform, !isDisabled)} className={`p-2 rounded-lg transition-colors ${isDisabled ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-green-500/10 text-green-400 hover:bg-green-500/20'}`}>
-                        <Power className="w-4 h-4" />
+                  <div key={platform} className={`bg-zinc-900 border rounded-xl p-3 sm:p-4 ${isDisabled ? 'border-red-500/50' : 'border-zinc-800'}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={`font-medium capitalize text-xs sm:text-sm truncate ${isDisabled ? 'text-red-400' : 'text-white'}`}>{platform}</span>
+                      <button onClick={() => togglePlatform(platform, !isDisabled)} className={`p-1.5 sm:p-2 rounded-lg transition-colors ${isDisabled ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-green-500/10 text-green-400 hover:bg-green-500/20'}`}>
+                        <Power className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </button>
                     </div>
                     {isDisabled && <p className="text-red-400/70 text-xs mt-2">Disabled</p>}
@@ -399,10 +399,10 @@ export default function Admin() {
 function StatCard({ icon: Icon, label, value, color }: { icon: React.ComponentType<{ className?: string }>; label: string; value: number | string; color: 'blue' | 'red' | 'yellow' | 'green' }) {
   const colors = { blue: 'bg-blue-500/10 text-blue-400', red: 'bg-red-500/10 text-red-400', yellow: 'bg-yellow-500/10 text-yellow-400', green: 'bg-green-500/10 text-green-400' };
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-      <div className={`w-10 h-10 rounded-lg ${colors[color]} flex items-center justify-center mb-3`}><Icon className="w-5 h-5" /></div>
-      <p className="text-2xl font-bold text-white">{value}</p>
-      <p className="text-zinc-500 text-sm">{label}</p>
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-4">
+      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg ${colors[color]} flex items-center justify-center mb-2 sm:mb-3`}><Icon className="w-4 h-4 sm:w-5 sm:h-5" /></div>
+      <p className="text-xl sm:text-2xl font-bold text-white">{value}</p>
+      <p className="text-zinc-500 text-xs sm:text-sm">{label}</p>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function ReportModal({ isOpen, onClose, url, platform, errorMessa
           />
 
           {/* Modal - centered with flexbox */}
-          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[101] flex items-center justify-center p-3 sm:p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -63,26 +63,26 @@ export default function ReportModal({ isOpen, onClose, url, platform, errorMessa
             >
               <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
-                      <AlertTriangle className="w-5 h-5 text-red-400" />
+                <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-zinc-800">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
+                      <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
                     </div>
                     <div>
-                      <h2 className="font-semibold text-white">Report an Issue</h2>
+                      <h2 className="font-semibold text-white text-sm sm:text-base">Report an Issue</h2>
                       <p className="text-xs text-zinc-500">Help us improve</p>
                     </div>
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
+                    className="p-1.5 sm:p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
 
                 {/* Content */}
-                <form onSubmit={handleSubmit} className="p-5">
+                <form onSubmit={handleSubmit} className="p-4 sm:p-5">
                   {/* URL */}
                   <div className="mb-4">
                     <label className="block text-sm text-zinc-400 mb-1.5">URL</label>

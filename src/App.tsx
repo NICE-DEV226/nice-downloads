@@ -131,7 +131,7 @@ function App() {
                 <div className="max-w-2xl mx-auto px-4 mt-8 text-center">
                   <button
                     onClick={handleReportClick}
-                    className="text-sm text-zinc-500 hover:text-red-400 transition-colors"
+                    className="text-xs sm:text-sm text-zinc-500 hover:text-red-400 transition-colors"
                   >
                     Report this issue →
                   </button>
@@ -155,7 +155,7 @@ function App() {
               <div className="max-w-2xl mx-auto px-4 mt-6 text-center">
                 <button
                   onClick={handleRateClick}
-                  className="text-sm text-zinc-500 hover:text-blue-400 transition-colors"
+                  className="text-xs sm:text-sm text-zinc-500 hover:text-blue-400 transition-colors"
                 >
                   ⭐ Rate your experience
                 </button>
@@ -166,18 +166,18 @@ function App() {
 
         {/* Features - only show when no result */}
         {!showResult && !hasError && (
-          <section className="py-16 px-4">
+          <section className="py-12 sm:py-16 px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 {[
                   { icon: '⚡', title: 'Fast', desc: 'Download in seconds' },
                   { icon: '🔒', title: 'Private', desc: 'No data stored' },
                   { icon: '🎨', title: 'Multiple formats', desc: 'Choose quality' },
                 ].map((f) => (
-                  <div key={f.title} className="card p-5 text-center">
-                    <div className="text-2xl mb-2">{f.icon}</div>
-                    <h3 className="font-medium text-white mb-1">{f.title}</h3>
-                    <p className="text-zinc-500 text-sm">{f.desc}</p>
+                  <div key={f.title} className="card p-4 sm:p-5 text-center">
+                    <div className="text-xl sm:text-2xl mb-2">{f.icon}</div>
+                    <h3 className="font-medium text-white mb-1 text-sm sm:text-base">{f.title}</h3>
+                    <p className="text-zinc-500 text-xs sm:text-sm">{f.desc}</p>
                   </div>
                 ))}
               </div>

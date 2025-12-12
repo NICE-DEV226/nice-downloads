@@ -26,7 +26,7 @@ export default function Hero() {
   const totalPlatforms = Object.keys(PLATFORMS).length;
 
   return (
-    <section className="pt-32 pb-10 px-4">
+    <section className="pt-24 sm:pt-32 pb-8 sm:pb-10 px-4">
       <div className="max-w-3xl mx-auto text-center">
         {/* Badge */}
         <motion.div
@@ -44,7 +44,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 text-balance leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 text-balance leading-tight px-2"
         >
           Download media from{' '}
           <span className="relative inline-block">
@@ -64,7 +64,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-zinc-400 text-lg sm:text-xl mb-10 max-w-xl mx-auto"
+          className="text-zinc-400 text-base sm:text-lg md:text-xl mb-10 max-w-xl mx-auto px-4"
         >
           Videos, images, and audio from your favorite platforms. Fast, free, no registration.
         </motion.p>
@@ -74,7 +74,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          className="flex items-center justify-center gap-3 flex-wrap"
+          className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap px-4"
         >
           {FEATURED_PLATFORMS.map(({ id, icon: Icon, color }, index) => (
             <motion.div
@@ -83,17 +83,17 @@ export default function Hero() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, delay: 0.6 + index * 0.05 }}
               whileHover={{ scale: 1.1, y: -2 }}
-              className="w-11 h-11 rounded-xl bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center hover:bg-zinc-800 hover:border-zinc-600 transition-colors cursor-default"
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-800/50 border border-zinc-700/50 flex items-center justify-center hover:bg-zinc-800 hover:border-zinc-600 transition-colors cursor-default"
               title={PLATFORMS[id].name}
             >
-              <Icon className="w-5 h-5" style={{ color }} />
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
             </motion.div>
           ))}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, delay: 0.9 }}
-            className="w-11 h-11 rounded-xl bg-zinc-800/30 border border-zinc-700/30 flex items-center justify-center text-zinc-500 text-sm font-medium"
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-zinc-800/30 border border-zinc-700/30 flex items-center justify-center text-zinc-500 text-xs sm:text-sm font-medium"
           >
             +{totalPlatforms - FEATURED_PLATFORMS.length}
           </motion.div>

@@ -61,7 +61,7 @@ export default function RatingModal({ isOpen, onClose, platform }: RatingModalPr
           />
 
           {/* Modal - centered with flexbox */}
-          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[101] flex items-center justify-center p-3 sm:p-4 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -70,23 +70,23 @@ export default function RatingModal({ isOpen, onClose, platform }: RatingModalPr
             >
               <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl">
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-800">
+                <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-zinc-800">
                   <div>
-                    <h2 className="font-semibold text-white">Rate your experience</h2>
+                    <h2 className="font-semibold text-white text-sm sm:text-base">Rate your experience</h2>
                     <p className="text-xs text-zinc-500">Your feedback helps us improve</p>
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
+                    className="p-1.5 sm:p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                 </div>
 
                 {/* Content */}
-                <form onSubmit={handleSubmit} className="p-5">
+                <form onSubmit={handleSubmit} className="p-4 sm:p-5">
                   {/* Stars */}
-                  <div className="flex justify-center gap-2 mb-3">
+                  <div className="flex justify-center gap-1 sm:gap-2 mb-3">
                     {[1, 2, 3, 4, 5].map((value) => (
                       <button
                         key={value}
@@ -97,7 +97,7 @@ export default function RatingModal({ isOpen, onClose, platform }: RatingModalPr
                         className="p-1 transition-transform hover:scale-110"
                       >
                         <Star
-                          className={`w-8 h-8 transition-colors ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
                             value <= displayScore
                               ? 'text-yellow-400 fill-yellow-400'
                               : 'text-zinc-600'

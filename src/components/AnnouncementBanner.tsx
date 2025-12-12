@@ -35,11 +35,11 @@ export default function AnnouncementBanner() {
       {visibleAnnouncements.map((a) => {
         const Icon = icons[a.type] || Info;
         return (
-          <div key={a.id} className={`flex items-center gap-3 px-4 py-3 rounded-xl border ${colors[a.type] || colors.info}`}>
-            <Icon className="w-5 h-5 shrink-0" />
-            <p className="flex-1 text-sm">{a.message}</p>
+          <div key={a.id} className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border ${colors[a.type] || colors.info}`}>
+            <Icon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <p className="flex-1 text-xs sm:text-sm">{a.message}</p>
             <button onClick={() => setDismissed([...dismissed, a.id])} className="p-1 hover:bg-white/10 rounded">
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         );

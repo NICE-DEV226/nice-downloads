@@ -68,16 +68,16 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
   if (isLoading) {
     return (
       <div className="w-full max-w-2xl mx-auto px-4 animate-fade-in">
-        <div className="card p-6">
-          <div className="flex gap-4">
-            <div className="w-32 h-24 bg-zinc-800 rounded-xl animate-pulse shrink-0" />
+        <div className="card p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="w-full sm:w-32 h-24 bg-zinc-800 rounded-xl animate-pulse shrink-0" />
             <div className="flex-1 space-y-3">
-              <div className="h-5 w-3/4 bg-zinc-800 rounded animate-pulse" />
-              <div className="h-4 w-1/2 bg-zinc-800 rounded animate-pulse" />
-              <div className="h-10 w-full bg-zinc-800 rounded-xl animate-pulse mt-4" />
+              <div className="h-4 sm:h-5 w-3/4 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-3 sm:h-4 w-1/2 bg-zinc-800 rounded animate-pulse" />
+              <div className="h-8 sm:h-10 w-full bg-zinc-800 rounded-xl animate-pulse mt-4" />
             </div>
           </div>
-          <div className="flex items-center justify-center gap-2 mt-6 text-zinc-500 text-sm">
+          <div className="flex items-center justify-center gap-2 mt-6 text-zinc-500 text-xs sm:text-sm">
             <div className="w-4 h-4 border-2 border-zinc-600 border-t-blue-500 rounded-full animate-spin" />
             <span>Fetching media...</span>
           </div>
@@ -96,27 +96,27 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
     <div className="w-full max-w-2xl mx-auto px-4 animate-fade-in">
       <div className="card overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-3 border-b border-zinc-800">
           <button
             onClick={onReset}
-            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm"
+            className="flex items-center gap-1.5 sm:gap-2 text-zinc-400 hover:text-white transition-colors text-xs sm:text-sm"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>New download</span>
           </button>
           {platform && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <PlatformIcon platform={platformId!} size="sm" />
-              <span className="text-sm text-zinc-400">{platform.name}</span>
+              <span className="text-xs sm:text-sm text-zinc-400">{platform.name}</span>
             </div>
           )}
         </div>
 
         {/* Content */}
-        <div className="p-4">
-          <div className="flex gap-4">
+        <div className="p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* Thumbnail */}
-            <div className="relative w-32 sm:w-40 shrink-0">
+            <div className="relative w-full sm:w-32 md:w-40 shrink-0">
               <div className="aspect-video rounded-xl overflow-hidden bg-zinc-800">
                 {result.thumbnail ? (
                   <img src={result.thumbnail} alt="" className="w-full h-full object-cover" />
@@ -140,12 +140,12 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-white line-clamp-2 mb-1">
+              <h3 className="font-semibold text-white line-clamp-2 mb-1 text-sm sm:text-base">
                 {result.title || 'Untitled'}
               </h3>
               {result.author && (
-                <div className="flex items-center gap-1.5 text-zinc-500 text-sm">
-                  <User className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1.5 text-zinc-500 text-xs sm:text-sm">
+                  <User className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span className="truncate">{result.author}</span>
                 </div>
               )}
@@ -183,7 +183,7 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-zinc-800 bg-zinc-900/50">
+        <div className="px-3 sm:px-4 py-3 border-t border-zinc-800 bg-zinc-900/50">
           <p className="text-zinc-600 text-xs text-center">
             {result.downloads.length} download option{result.downloads.length !== 1 ? 's' : ''} available
           </p>
@@ -209,14 +209,14 @@ interface DownloadRowProps {
 
 function DownloadRow({ download, icon, onDownload, onCopy, isCopied, isAudio }: DownloadRowProps) {
   return (
-    <div className="flex items-center gap-3 p-2.5 rounded-xl bg-zinc-800/50 hover:bg-zinc-800 transition-colors group">
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-xl bg-zinc-800/50 hover:bg-zinc-800 transition-colors group">
+      <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 ${
         isAudio ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'
       }`}>
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate">{download.label}</p>
+        <p className="text-xs sm:text-sm font-medium text-white truncate">{download.label}</p>
         <p className="text-xs text-zinc-500">
           {[download.quality, download.format?.toUpperCase()].filter(Boolean).join(' • ')}
         </p>
@@ -224,20 +224,20 @@ function DownloadRow({ download, icon, onDownload, onCopy, isCopied, isAudio }: 
       <div className="flex items-center gap-1">
         <button
           onClick={() => onCopy(download.url)}
-          className="p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-700 transition-colors"
+          className="p-1.5 sm:p-2 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-700 transition-colors"
           title="Copy link"
         >
-          {isCopied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+          {isCopied ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" /> : <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
         </button>
         <button
           onClick={() => onDownload(download.url, download.label)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+          className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
             isAudio
               ? 'bg-green-600 hover:bg-green-500 text-white'
               : 'bg-blue-600 hover:bg-blue-500 text-white'
           }`}
         >
-          <Download className="w-3.5 h-3.5" />
+          <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           <span className="hidden sm:inline">Download</span>
         </button>
       </div>

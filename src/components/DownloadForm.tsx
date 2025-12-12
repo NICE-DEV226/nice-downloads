@@ -173,21 +173,21 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
 
           {/* Platform detected badge */}
           {detectedPlatform && !error && !disabledMessage && (
-            <div className="absolute -bottom-7 left-4 text-sm text-zinc-500">
+            <div className="absolute -bottom-7 left-4 text-xs sm:text-sm text-zinc-500">
               Detected: <span className="text-zinc-300">{getPlatformDisplayName(detectedPlatform, url)}</span>
             </div>
           )}
 
           {/* Disabled platform message */}
           {disabledMessage && !error && (
-            <div className="absolute -bottom-7 left-4 text-sm text-yellow-500">
+            <div className="absolute -bottom-7 left-4 text-xs sm:text-sm text-yellow-500">
               ⚠️ {disabledMessage}
             </div>
           )}
 
           {/* Error message */}
           {error && (
-            <div className="absolute -bottom-7 left-4 text-sm text-red-400">
+            <div className="absolute -bottom-7 left-4 text-xs sm:text-sm text-red-400">
               {error}
             </div>
           )}
@@ -195,7 +195,7 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
       </form>
 
       {/* Helper text */}
-      <p className="text-center text-zinc-600 text-sm mt-12">
+      <p className="text-center text-zinc-600 text-xs sm:text-sm mt-12 px-4">
         Paste any link from supported platforms — we'll detect it automatically
       </p>
     </div>
