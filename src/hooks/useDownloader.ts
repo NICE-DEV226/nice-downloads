@@ -41,16 +41,20 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
       if (!url || url === '#') return;
 
       const label = item.text || item.label || item.quality || 'Download';
+      const format = item.format || item.extension || extractFormat(label);
       const isAudio = label.toLowerCase().includes('mp3') ||
-                      label.toLowerCase().includes('audio') ||
-                      item.type?.toLowerCase() === 'audio';
+        label.toLowerCase().includes('audio') ||
+        item.type?.toLowerCase() === 'audio' ||
+        format === 'mp3';
+      const isImage = item.type?.toLowerCase() === 'image' ||
+        ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(format?.toLowerCase() || '');
 
       downloads.push({
         url,
         label,
         quality: item.quality || extractQuality(label),
-        format: item.format || item.extension || extractFormat(label),
-        type: isAudio ? 'audio' : 'video',
+        format,
+        type: isAudio ? 'audio' : (isImage ? 'image' : 'video'),
         isAudio,
       });
     });
@@ -153,7 +157,7 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
         type: 'video',
       });
     });
-    
+
     // Get thumbnail from first item if not already set
     if (!(data as any).thumbnail && (data as any).data[0]?.thumbnail) {
       (data as any).thumbnail = (data as any).data[0].thumbnail;
@@ -232,11 +236,19 @@ function extractQuality(label: string): string | undefined {
 }
 
 function extractFormat(label: string): string | undefined {
-  const match = label.match(/\.(mp4|mp3|webm|m4a|wav|avi|mkv|mov)/i);
-  if (match) return match[1];
-  if (label.toLowerCase().includes('mp4')) return 'mp4';
-  if (label.toLowerCase().includes('mp3')) return 'mp3';
-  if (label.toLowerCase().includes('webm')) return 'webm';
+  const match = label.match(/\.(mp4|mp3|webm|m4a|wav|avi|mkv|mov|jpg|jpeg|png|webp|gif)/i);
+  if (match) return match[1].toLowerCase();
+
+  const lowerLabel = label.toLowerCase();
+  if (lowerLabel.includes('mp4')) return 'mp4';
+  if (lowerLabel.includes('mp3')) return 'mp3';
+  if (lowerLabel.includes('webm')) return 'webm';
+  if (lowerLabel.includes('jpg') || lowerLabel.includes('jpeg')) return 'jpg';
+  if (lowerLabel.includes('png')) return 'png';
+  if (lowerLabel.includes('webp')) return 'webp';
+  if (lowerLabel.includes('gif')) return 'gif';
+  if (lowerLabel.includes('original image')) return 'png'; // Pinterest default
+
   return undefined;
 }
 

@@ -27,11 +27,12 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
     }
   };
 
-  const handleDownload = (url: string, label: string) => {
-    // Use proxy for cross-origin downloads
-    const filename = `${label.replace(/[^a-z0-9]/gi, '_')}.mp4`;
-    const proxyUrl = apiUrl(`/api/proxy/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`);
-    
+  const handleDownload = (d: NormalizedDownload) => {
+    // Determine extension: use d.format, or extract from URL, or default to mp4
+    const ext = d.format || d.url.split('.').pop()?.split('?')[0] || 'mp4';
+    const filename = `${d.label.replace(/[^a-z0-9]/gi, '_')}.${ext}`;
+    const proxyUrl = apiUrl(`/api/proxy/download?url=${encodeURIComponent(d.url)}&filename=${encodeURIComponent(filename)}`);
+
     // Create link and trigger download
     const link = document.createElement('a');
     link.href = proxyUrl;
@@ -39,12 +40,12 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
-    toast.success(`Downloading ${label}...`);
-    
+
+    toast.success(`Downloading ${d.label}...`);
+
     // Track download
     if (platformId) {
-      axios.post(apiUrl('/api/admin/track'), { platform: platformId }).catch(() => {});
+      axios.post(apiUrl('/api/admin/track'), { platform: platformId }).catch(() => { });
     }
   };
 
@@ -201,7 +202,7 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
 interface DownloadRowProps {
   download: NormalizedDownload;
   icon: React.ReactNode;
-  onDownload: (url: string, label: string) => void;
+  onDownload: (d: NormalizedDownload) => void;
   onCopy: (url: string) => void;
   isCopied: boolean;
   isAudio?: boolean;
@@ -210,9 +211,8 @@ interface DownloadRowProps {
 function DownloadRow({ download, icon, onDownload, onCopy, isCopied, isAudio }: DownloadRowProps) {
   return (
     <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-xl bg-zinc-800/50 hover:bg-zinc-800 transition-colors group">
-      <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 ${
-        isAudio ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'
-      }`}>
+      <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 ${isAudio ? 'bg-green-500/10 text-green-400' : 'bg-blue-500/10 text-blue-400'
+        }`}>
         {icon}
       </div>
       <div className="flex-1 min-w-0">
@@ -230,12 +230,11 @@ function DownloadRow({ download, icon, onDownload, onCopy, isCopied, isAudio }: 
           {isCopied ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400" /> : <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
         </button>
         <button
-          onClick={() => onDownload(download.url, download.label)}
-          className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-            isAudio
+          onClick={() => onDownload(download)}
+          className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${isAudio
               ? 'bg-green-600 hover:bg-green-500 text-white'
               : 'bg-blue-600 hover:bg-blue-500 text-white'
-          }`}
+            }`}
         >
           <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           <span className="hidden sm:inline">Download</span>
