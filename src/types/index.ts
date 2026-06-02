@@ -79,6 +79,16 @@ export interface ApiResponse<T = DownloadResult> {
 export interface TikTokDownload {
   text: string;
   url: string;
+  type?: 'video' | 'image' | 'audio';
+  quality?: string;
+  format?: string;
+  label?: string;
+}
+
+export interface TikTokSlide {
+  url: string;
+  thumbnail?: string;
+  description?: string;
 }
 
 export interface TikTokResult {
@@ -86,6 +96,10 @@ export interface TikTokResult {
   title: string | null;
   thumbnail: string | null;
   downloads: TikTokDownload[];
+  slides?: TikTokSlide[];
+  music?: { url: string; label?: string };
+  hasMusic?: boolean;
+  isSlideshow?: boolean;
 }
 
 // YouTube specific
@@ -202,4 +216,5 @@ export interface NormalizedResult {
   downloads: NormalizedDownload[];
   platform: Platform;
   originalData: DownloadResult;
+  isSlideshow?: boolean;
 }

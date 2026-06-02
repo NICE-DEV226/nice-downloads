@@ -2,7 +2,7 @@ import { useState, useEffect, FormEvent, useRef } from 'react';
 import { Download, Loader2, Link2, X, Clipboard } from 'lucide-react';
 import { FaFacebook } from 'react-icons/fa';
 import axios from 'axios';
-import { detectPlatform, getPlatformDisplayName, PLATFORMS, PlatformId, PlatformIcon } from './PlatformIcon';
+import { detectPlatform, getPlatformDisplayName, PlatformId, PlatformIcon } from './PlatformIcon';
 import { apiUrl } from '../config';
 
 // Cache for disabled platforms from backend
@@ -84,10 +84,6 @@ export default function DownloadForm({ onDownload, isLoading, error, onReset }: 
     onReset();
     inputRef.current?.focus();
   };
-
-  // platformInfo is available for future use
-  const _platformInfo = detectedPlatform ? PLATFORMS[detectedPlatform] : null;
-  void _platformInfo;
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4">

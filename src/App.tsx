@@ -11,11 +11,11 @@ import AnnouncementBanner from '@/components/AnnouncementBanner';
 import PollWidget from '@/components/PollWidget';
 import Admin from '@/pages/Admin';
 import { useDownloader } from '@/hooks/useDownloader';
-import { detectPlatform, PlatformId } from '@/components/PlatformIcon';
+import { detectPlatform, Platform } from '@/utils/platformDetector';
 
 function App() {
   const { state, download, reset, normalizedResult } = useDownloader();
-  const [detectedPlatformId, setDetectedPlatformId] = useState<PlatformId | null>(null);
+  const [detectedPlatformId, setDetectedPlatformId] = useState<Platform>(null);
   const [lastUrl, setLastUrl] = useState('');
   const [showReportModal, setShowReportModal] = useState(false);
   const [showRatingModal, setShowRatingModal] = useState(false);

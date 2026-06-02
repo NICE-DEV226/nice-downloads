@@ -74,7 +74,7 @@ export const PLATFORMS: Record<PlatformId, PlatformConfig> = {
     icon: FaXTwitter,
     color: '#ffffff',
     bgColor: 'bg-zinc-700/50',
-    patterns: [], // Temporarily disabled - external services blocked
+    patterns: [/twitter\.com/i, /x\.com/i, /t\.co/i],
   },
   spotify: {
     id: 'spotify',
@@ -82,7 +82,7 @@ export const PLATFORMS: Record<PlatformId, PlatformConfig> = {
     icon: FaSpotify,
     color: '#1db954',
     bgColor: 'bg-green-500/10',
-    patterns: [], // Temporarily disabled
+    patterns: [/open\.spotify\.com/i, /spotify\.com/i],
   },
   pinterest: {
     id: 'pinterest',

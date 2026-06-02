@@ -1,5 +1,5 @@
-import { Download, Copy, Check, ArrowLeft, Music, Image as ImageIcon, Film, User, Clock } from 'lucide-react';
-import { useState } from 'react';
+import { Download, Copy, Check, ArrowLeft, Music, Image as ImageIcon, Film, User, Clock, Images } from 'lucide-react';
+import { useState, useCallback } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { NormalizedResult, NormalizedDownload } from '@/types';
@@ -28,9 +28,13 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
   };
 
   const handleDownload = (d: NormalizedDownload) => {
-    // Determine extension: use d.format, or extract from URL, or default to mp4
     const ext = d.format || d.url.split('.').pop()?.split('?')[0] || 'mp4';
-    const filename = `${d.label.replace(/[^a-z0-9]/gi, '_')}.${ext}`;
+    const titlePart = result?.title
+      ? result.title.replace(/[^a-z0-9]/gi, '_').substring(0, 40).replace(/_+$/, '')
+      : '';
+    const labelPart = d.label.replace(/[^a-z0-9]/gi, '_').substring(0, 30);
+    const baseName = [titlePart, labelPart].filter(Boolean).join('_') || 'download';
+    const filename = `${baseName}.${ext}`;
     const proxyUrl = apiUrl(`/api/proxy/download?url=${encodeURIComponent(d.url)}&filename=${encodeURIComponent(filename)}`);
 
     // Create link and trigger download
@@ -89,9 +93,17 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
 
   if (!result) return null;
 
-  const videoDownloads = result.downloads.filter(d => d.type === 'video' || (!d.isAudio && d.type !== 'audio'));
+  const imageDownloads = result.downloads.filter(d => d.type === 'image');
+  const videoDownloads = result.downloads.filter(d => d.type === 'video' || (!d.isAudio && d.type !== 'audio' && d.type !== 'image'));
   const audioDownloads = result.downloads.filter(d => d.type === 'audio' || d.isAudio);
   const platform = platformId ? PLATFORMS[platformId] : null;
+
+  const downloadAllImages = useCallback(() => {
+    imageDownloads.forEach((d, i) => {
+      setTimeout(() => handleDownload(d), i * 600);
+    });
+    toast.success(`Downloading ${imageDownloads.length} images...`);
+  }, [imageDownloads]);
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 animate-fade-in">
@@ -153,30 +165,92 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
             </div>
           </div>
 
-          {/* Downloads */}
-          <div className="mt-4 space-y-2">
-            {videoDownloads.slice(0, 4).map((d, i) => (
-              <DownloadRow
-                key={`v-${i}`}
-                download={d}
-                icon={getTypeIcon(d)}
-                onDownload={handleDownload}
-                onCopy={handleCopy}
-                isCopied={copiedUrl === d.url}
-              />
-            ))}
-            {audioDownloads.slice(0, 2).map((d, i) => (
-              <DownloadRow
-                key={`a-${i}`}
-                download={d}
-                icon={getTypeIcon(d)}
-                onDownload={handleDownload}
-                onCopy={handleCopy}
-                isCopied={copiedUrl === d.url}
-                isAudio
-              />
-            ))}
-          </div>
+          {/* Image section */}
+          {imageDownloads.length > 0 && (
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-xs sm:text-sm font-medium text-zinc-400 flex items-center gap-1.5">
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  {result.isSlideshow ? 'Slideshow Images' : 'Images'}
+                  <span className="text-zinc-600">({imageDownloads.length})</span>
+                </h4>
+                {imageDownloads.length > 1 && (
+                  <button
+                    onClick={downloadAllImages}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs transition-colors"
+                  >
+                    <Images className="w-3.5 h-3.5" />
+                    Download All
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {imageDownloads.map((d, i) => (
+                  <div
+                    key={`img-${i}`}
+                    className="relative aspect-square rounded-xl overflow-hidden bg-zinc-800 group cursor-pointer"
+                    onClick={() => handleDownload(d)}
+                  >
+                    <img
+                      src={d.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                      <Download className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-white text-[10px]">
+                      {d.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Video downloads */}
+          {videoDownloads.length > 0 && (
+            <div className="mt-4">
+              {imageDownloads.length > 0 && (
+                <h4 className="text-xs sm:text-sm font-medium text-zinc-400 mb-2 flex items-center gap-1.5">
+                  <Film className="w-3.5 h-3.5" />
+                  {result.isSlideshow ? 'With Music (Video)' : 'Video'}
+                </h4>
+              )}
+              <div className="space-y-2">
+                {videoDownloads.slice(0, 4).map((d, i) => (
+                  <DownloadRow
+                    key={`v-${i}`}
+                    download={d}
+                    icon={getTypeIcon(d)}
+                    onDownload={handleDownload}
+                    onCopy={handleCopy}
+                    isCopied={copiedUrl === d.url}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Audio downloads */}
+          {audioDownloads.length > 0 && (
+            <div className="mt-3">
+              <div className="space-y-2">
+                {audioDownloads.slice(0, 2).map((d, i) => (
+                  <DownloadRow
+                    key={`a-${i}`}
+                    download={d}
+                    icon={getTypeIcon(d)}
+                    onDownload={handleDownload}
+                    onCopy={handleCopy}
+                    isCopied={copiedUrl === d.url}
+                    isAudio
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {result.downloads.length === 0 && (
             <p className="text-center text-zinc-500 py-6">No downloadable media found.</p>
@@ -186,7 +260,11 @@ export default function ResultCard({ result, isLoading, platformId, onReset }: R
         {/* Footer */}
         <div className="px-3 sm:px-4 py-3 border-t border-zinc-800 bg-zinc-900/50">
           <p className="text-zinc-600 text-xs text-center">
-            {result.downloads.length} download option{result.downloads.length !== 1 ? 's' : ''} available
+            {[
+              imageDownloads.length > 0 && `${imageDownloads.length} image${imageDownloads.length > 1 ? 's' : ''}`,
+              videoDownloads.length > 0 && `${videoDownloads.length} video${videoDownloads.length > 1 ? 's' : ''}`,
+              audioDownloads.length > 0 && `${audioDownloads.length} audio`,
+            ].filter(Boolean).join(' • ')} available
           </p>
           {platformId === 'youtube' && (
             <p className="text-yellow-500/70 text-xs text-center mt-1">

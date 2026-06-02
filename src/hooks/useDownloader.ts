@@ -60,6 +60,32 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
     });
   }
 
+  // Handle TikTok slides (slideshow images)
+  const slidesData = (data as any).slides;
+  if (slidesData && Array.isArray(slidesData) && slidesData.length > 0) {
+    slidesData.forEach((slide: any, index: number) => {
+      if (!slide.url) return;
+      downloads.push({
+        url: slide.url,
+        label: slide.description || `Image ${index + 1}`,
+        type: 'image',
+        format: 'jpg',
+      });
+    });
+  }
+
+  // Handle TikTok background music
+  const musicData = (data as any).music;
+  if (musicData?.url) {
+    downloads.push({
+      url: musicData.url,
+      label: musicData.label || 'Background Music',
+      type: 'audio',
+      isAudio: true,
+      format: 'mp3',
+    });
+  }
+
   // Handle YouTube formats
   if (data.formats && Array.isArray(data.formats)) {
     data.formats.forEach((item) => {
@@ -217,6 +243,9 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
     thumbnail = (data as any).data[0].thumbnail;
   }
 
+  const hasSlides = !!(data as any).slides?.length;
+  const isSlideshow = !!(data as any).isSlideshow || hasSlides;
+
   return {
     title: data.title || data.caption || (downloads.length > 0 ? 'Media Download' : 'Untitled'),
     thumbnail,
@@ -227,6 +256,7 @@ function normalizeResult(data: DownloadResult, platform: PlatformInfo): Normaliz
     downloads,
     platform: platform as unknown as import('@/types').Platform,
     originalData: data,
+    isSlideshow,
   };
 }
 
